@@ -138,12 +138,33 @@ void flag::reset(gb* gb) const {
 	set(gb, false);
 }
 
+// Negative flag
+class nflag {
+private:
+	const int bit;
+
+public:
+	nflag(int p_bit);
+	bool get(const gb* gb) const;
+};
+
+nflag::nflag(int p_bit) :
+	bit(p_bit)
+{}
+
+bool nflag::get(const gb* gb) const {
+	return !get_bit(AF.get(gb), bit);
+}
+
 class F : public lo_reg8 {
 public:
 	const flag Z; // Zero flag
 	const flag N; // Negative flag
 	const flag H; // Half-carry flag
 	const flag C; // Carry flag
+
+	const nflag NZ; // Negative Zero flag
+	const nflag NC; // Negative Carry flag
 
 	F();
 };
@@ -153,7 +174,9 @@ F::F() :
 	Z(7),
 	N(6),
 	H(5),
-	C(4)
+	C(4),
+	NZ(7),
+	NC(4)
 {}
 
 const F F; // Flag register

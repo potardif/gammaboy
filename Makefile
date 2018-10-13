@@ -18,7 +18,11 @@ $(EXE): *.cpp Makefile
 		-Wno-global-constructors \
 		-Wno-missing-prototypes \
 		-Wno-missing-variable-declarations \
-		-Wno-padded
+		-Wno-padded \
+		-Wno-tautological-unsigned-zero-compare
+
+opcodes.cpp extended_opcodes.cpp: opcodes.go
+	go run opcodes.go
 
 clean:
 

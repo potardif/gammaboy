@@ -2,15 +2,17 @@
 #include <nettle/sha2.h> // sha256_*, SHA256_DIGEST_SIZE
 #include <stddef.h> // size_t
 #include <stdio.h> // f*, SEEK_*, sprintf, stderr
-#include <stdint.h> // uint*_t
+#include <stdint.h> // int8_t, uint*_t
 #include <stdlib.h> // exit, EXIT_*
-#include <string.h> // memcmp
+#include <string.h> // memcmp, memset, strcmp
 
 #include "util.cpp"
 #include "gb.cpp"
 #include "registers.cpp"
 
-const size_t BIOS_LENGTH = 256;
+const u16 BIOS_START = 0x0000;
+const u16 BIOS_END = 0x00FF;
+const size_t BIOS_LENGTH = BIOS_END - BIOS_START + 1;
 u8 bios[BIOS_LENGTH];
 
 #include "memory.cpp"
@@ -47,19 +49,43 @@ void load_bios(const char* path) {
 	}
 }
 
+[[noreturn]]
+void panic_usage() {
+	panic("Usage: ./gammaboy path/to/DMG_bios [--log]");
+}
+
 int main(int argc, const char* argv[]) {
-	if (argc != 2) {
-		panic("Usage: ./gammaboy path/to/DMG_bios");
+	// Parse command line arguments.
+	const char* path_to_DMG_bios;
+	bool log = false;
+	if (argc >= 2) {
+		path_to_DMG_bios = argv[1];
+
+		for (int i = 2; i < argc; ++i) {
+			const char* arg = argv[i];
+			if (strcmp(arg, "--log") == 0) {
+				log = true;
+			} else {
+				panic_usage();
+			}
+		}
+	} else {
+		panic_usage();
 	}
 
-	load_bios(argv[1]);
+	load_bios(path_to_DMG_bios);
 
 	gb gb_;
+	gb_.log = log;
 	gb* gb = &gb_;
 	for (;;) {
-		printf("PC=0x%04X AF=0x%04X BC=0x%04X DE=0x%04X HL=0x%04X SP=0x%04X\n",
-			PC.get(gb), AF.get(gb), BC.get(gb), DE.get(gb), HL.get(gb),
-			SP.get(gb));
+		if (gb_.log) {
+			printf(
+				"PC=0x%04X AF=0x%04X BC=0x%04X DE=0x%04X HL=0x%04X SP=0x%04X\n",
+				PC.get(gb), AF.get(gb), BC.get(gb),
+				DE.get(gb), HL.get(gb), SP.get(gb)
+			);
+		}
 
 		fetch_decode_execute(gb);
 	}

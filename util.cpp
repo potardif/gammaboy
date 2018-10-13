@@ -4,6 +4,7 @@
 	exit(EXIT_FAILURE)
 
 using u8 = uint8_t;
+using i8 = int8_t;
 using u16 = uint16_t;
 
 template<typename T>

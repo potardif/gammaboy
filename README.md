@@ -8,26 +8,28 @@ Its developement is documented [here](https://potardif.github.io/).
 
 ### On Ubuntu
 
-```terminal
+```bash
 sudo apt install clang
 sudo apt install nettle-dev
 sudo apt install make
+sudo apt install golang # If you want to modify opcodes.go.
 make
 ```
 
 ### On Fedora
 
-```terminal
+```bash
 sudo dnf install clang
 sudo dnf install nettle-devel
 sudo dnf install make
+sudo dnf install golang # If you want to modify opcodes.go.
 make
 ```
 
 ## Usage
 
-```terminal
-./gammaboy path/to/DMG_bios
+```
+./gammaboy path/to/DMG_bios [--log]
 ```
 
 The DMG bios is a 256-byte file with this SHA-256 hash:
