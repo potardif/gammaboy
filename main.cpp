@@ -13,6 +13,9 @@
 const size_t BIOS_LENGTH = 256;
 u8 bios[BIOS_LENGTH];
 
+#include "memory.cpp"
+#include "cpu.cpp"
+
 void load_bios(const char* path) {
 	read_file(path, [path](size_t length) {
 		if (length != BIOS_LENGTH) {
@@ -50,6 +53,16 @@ int main(int argc, const char* argv[]) {
 	}
 
 	load_bios(argv[1]);
+
+	gb gb_;
+	gb* gb = &gb_;
+	for (;;) {
+		printf("PC=0x%04X AF=0x%04X BC=0x%04X DE=0x%04X HL=0x%04X SP=0x%04X\n",
+			PC.get(gb), AF.get(gb), BC.get(gb), DE.get(gb), HL.get(gb),
+			SP.get(gb));
+
+		fetch_decode_execute(gb);
+	}
 
 	return EXIT_SUCCESS;
 }

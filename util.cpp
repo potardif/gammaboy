@@ -25,6 +25,14 @@ T set_bit(T x, int bit, bool value) {
 	return x;
 }
 
+void binary_repr(u8 x, char* s) {
+	for (int i = 0; i <= 7; ++i) {
+		const int bit = 7 - i;
+		s[i] = get_bit(x, bit) ? '1' : '0';
+	}
+	s[8] = '\0';
+}
+
 template<typename T>
 void read_file(const char* path, T get_buffer) {
 	FILE* f = fopen(path, "rb");
