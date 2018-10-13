@@ -2,6 +2,8 @@
 
 gammaboy is a work-in-progress Game Boy emulator written in C++.
 
+Its developement is documented [here](https://potardif.github.io/).
+
 ## Compilation
 
 ### On Ubuntu
