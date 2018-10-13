@@ -4,6 +4,26 @@
 	exit(EXIT_FAILURE)
 
 using u8 = uint8_t;
+using u16 = uint16_t;
+
+template<typename T>
+bool get_bit(T x, int bit) {
+	assert(0 <= bit && bit < static_cast<int>(sizeof(T)) * 8);
+
+	return ((x >> bit) & 1) != 0;
+}
+
+template<typename T>
+T set_bit(T x, int bit, bool value) {
+	assert(0 <= bit && bit < static_cast<int>(sizeof(T)) * 8);
+
+	if (value) {
+		x |= 1 << bit;
+	} else {
+		x &= ~(1 << bit);
+	}
+	return x;
+}
 
 template<typename T>
 void read_file(const char* path, T get_buffer) {

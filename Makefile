@@ -14,8 +14,11 @@ $(EXE): *.cpp Makefile
 		-Weverything \
 		-Wno-c++98-compat \
 		-Wno-c++98-compat-pedantic \
+		-Wno-c99-extensions \
+		-Wno-global-constructors \
 		-Wno-missing-prototypes \
-		-Wno-missing-variable-declarations
+		-Wno-missing-variable-declarations \
+		-Wno-padded
 
 clean:
 

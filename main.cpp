@@ -2,11 +2,13 @@
 #include <nettle/sha2.h> // sha256_*, SHA256_DIGEST_SIZE
 #include <stddef.h> // size_t
 #include <stdio.h> // f*, SEEK_*, sprintf, stderr
-#include <stdint.h> // uint8_t
+#include <stdint.h> // uint*_t
 #include <stdlib.h> // exit, EXIT_*
 #include <string.h> // memcmp
 
 #include "util.cpp"
+#include "gb.cpp"
+#include "registers.cpp"
 
 const size_t BIOS_LENGTH = 256;
 u8 bios[BIOS_LENGTH];
